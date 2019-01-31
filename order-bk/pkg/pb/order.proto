@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.airparking.cloud.order";
+option java_outer_classname = "OrderProto";
+
+package pb;
+
+service OrderCenter {
+    rpc Book(BookRequest) returns (IDResponse) {};
+    rpc Search (SearchRequest) returns (SearchResponse) {};
+    // rpc UserOrders (User) returns (SearchResponse) {};
+    rpc Detail (IDRequest) returns (OrderResponse) {};
+    rpc Start (BookRequest) returns (SimpleResponse) {};
+    rpc End (EndRequest) returns (SimpleResponse) {};
+    rpc Cancel (IDRequest) returns (SimpleResponse) {};
+    rpc CalFee (CalFeeRequest) returns (SimpleResponse) {};
+    rpc NewSpace (NewSpaceRequest) returns (SimpleResponse) {};
+    rpc Paid (PaidRequest) returns (SimpleResponse) {};
+    rpc Appeal (IDRequest) returns (SimpleResponse) {};
+}
+
+message IDRequest {
+    int64 id = 1;
+}
+
+message User {
+    int64 user_id = 1;
+    string mobile = 2;
+}
+
+message BookRequest {
+    int64 user_id = 1;
+    string mobile = 2;
+    string car_no = 3;
+    string park_no = 4;
+    string park_name = 5;
+    int64 space_id = 6;
+    string space_no = 7;
+    int64 channel_id = 8;
+}
+
+message CalFeeRequest {
+    int64 id = 1;
+    string park_no = 2;
+    int64 start_time = 3;
+    int64 end_time = 4;
+    int64 space_id = 5;
+}
+
+message IDResponse {
+    int64 id = 1;
+}
+
+message EnterRequest {
+    string park_no = 1;
+    string car_no = 2;
+    string leave_time = 3;
+    string parking_no = 4;
+    string parking_type = 5;
+    string enter_img = 6;
+}
+
+message EndRequest {
+    string park_no = 1;
+    string car_no = 2;
+    string leave_time = 3;
+    string parking_no = 4;
+    string leave_img = 5;
+    string parking_type = 6;
+}
+
+message SimpleResponse {
+    int32 result = 1;
+}
+
+message OrderResponse {
+    int64 id = 1;
+    int64 user_id = 2;
+    string mobile = 3;
+    string car_no = 4;
+    string park_no = 5;
+    string park_name = 6;
+    int64 space_id = 7;
+    string space_no = 8;
+    int32 status = 9;
+    int32 type = 10;
+    int32 payment_type = 11;
+    string start_time = 12;
+    string end_time = 13;
+    int32 total_fee = 14;
+    int32 discount_fee = 15;
+    int32 other_fee = 16;
+    repeated Parking parkings = 17;
+}
+
+message Parking {
+    int64 order_id = 1;
+    string enter_time = 2;
+    string leave_time = 3;
+    string free_to = 4;
+    string limit_to = 5;
+    string price = 6;
+    string enter_img = 7;
+    string leave_img = 8;
+}
+
+message SearchRequest {
+    int64 user_id = 1;
+    string park_no = 2;
+    int64 space_id = 3;
+    string start_time = 4;
+    string end_time = 5;
+    string status = 6;
+    string order_type = 7;
+}
+
+message SearchResponse {
+    int32 total = 1;
+    repeated OrderResponse results = 2;
+}
+
+message NewSpaceRequest {
+    int64 id = 2;
+    int64 space_id = 1;
+}
+
+message PaidRequest {
+    int64 id = 1;
+    int32 total_fee = 2;
+    int32 discount_fee = 3;
+    int32 other_fee = 4;
+}
